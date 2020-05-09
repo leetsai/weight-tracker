@@ -4,11 +4,18 @@
   "description": "track baby growth",
   "main": "connection.js",
   "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
     "mongodb": "^3.5.7"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "concurrently": "^5.2.0"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "client": "cd client && yarn start",
+    "server": "nodemon server.js",
+    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
   },
   "repository": {
     "type": "git",
