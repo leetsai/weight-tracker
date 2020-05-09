@@ -1,8 +1,8 @@
 const {MongoClient} = require('mongodb');
-
+const config = require('./config');
 
 async function main() {
-    const uri = "mongodb+srv://<username>:<password>@cluster0-dqtbm.mongodb.net/test?retryWrites=true&w=majority"
+    const uri = `mongodb+srv://${config.db.username}:${config.db.password}@cluster0-dqtbm.mongodb.net/test?retryWrites=true&w=majority`
     
     const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -11,7 +11,7 @@ async function main() {
         await client.connect();
         
         // Make DB calls
-        await listDatabases(client);
+        await getAllResults(client, "baby_weight", "preston")
     } catch (e) {
         console.error(e);
     } finally {
@@ -21,9 +21,8 @@ async function main() {
 
 main().catch(console.error);
 
-async function listDatabases(client) {
-    databasesList = await client.db().admin().listDatabases();
+async function getAllResults(client, database, table) {
+    const results = await client.db(database).collection(table).find().sort({date: 1}).toArray();
 
-    console.log("Databases:");
-    databasesList.databases.forEach(db => console.log(` - ${db.name}`));
-};
+    console.log(results);
+}
